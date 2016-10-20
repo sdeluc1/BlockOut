@@ -1,15 +1,32 @@
 body {
   width: 900px;
+  background-color: lightblue;
+  padding: 30px;
 }
 
 .main {
-  margin: 0 auto;
-
+  /*padding: 30px;*/
+  margin: 20px;
+  width: 900px;
 }
 
 #canvas {
   border: 5px solid rgb(79, 39, 3);
-  margin: 100px;
   background-color: rgb(231, 130, 57);
   cursor: pointer;
+  margin-left: 250px;
+}
+
+.main-title {
+  background-color: rgb(60, 27, 9);
+  color: white;
+  width: 300px;
+  text-align: center;
+  margin-left: 400px;
+  border: 2px solid white;
+  font-size: 50px;
+}
+
+.game-board {
+  margin: auto;
 }

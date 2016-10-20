@@ -6,6 +6,10 @@ class Game {
     this.dragging = {};
     this.grid = 100;
 
+    this.exit = new createjs.Shape();
+    this.exit.graphics.setStrokeStyle(3).beginStroke("black").beginFill("red").drawRoundRect(650, 200, 10, 100, 10);
+    this.stage.addChild(this.exit);
+
     this.drag = this.drag.bind(this);
   }
 
@@ -162,6 +166,7 @@ block5.graphics.setStrokeStyle(3).beginStroke("black").beginFill("pink").drawRou
 block6.graphics.setStrokeStyle(3).beginStroke("black").beginFill("lightblue").drawRoundRect(0, 0, 100, 300, 10);
 block7.graphics.setStrokeStyle(3).beginStroke("black").beginFill("orange").drawRoundRect(0, 0, 100, 300, 10);
 block8.graphics.setStrokeStyle(3).beginStroke("black").beginFill("purple").drawRoundRect(0, 0, 300, 100, 10);
+
 
 
 block1.x = 0;
