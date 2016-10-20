@@ -1,0 +1,14 @@
+body {
+  width: 900px;
+}
+
+.main {
+  margin: 0 auto;
+
+}
+
+#canvas {
+  border: 5px solid black;
+  margin: 100px;
+  background-color: rgb(231, 130, 57);
+}
