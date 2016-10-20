@@ -74,23 +74,21 @@
 	  }
 
 	  // checkCollision(nextX, nextY, target, block) {
-	  //   if(target._bounds.height > 100){
-	  //     if(target.y < nextY){
-	  //       if(target.y + target._bounds.height >= block.y){
-	  //         return true;
-	  //       }
-	  //     } else if(target.y > nextY){
-	  //       if(target.y <= block.y + block._bounds.height){
-	  //         return true;
-	  //       }
+	  //   if(target._bounds.height > 100 && this.inPath(target, block, 'vertical')){
+	  //     if(target.y < nextY && nextY + target._bounds.height <= block.y){
+	  //       return true;
+	  //     } else if(target.y > nextY && block.y + block._bounds.height < target.y){
+	  //       return true;
 	  //     }
-	  //   } else {
-	  //     if(target.x < nextX){
+	  //   } else if(target._bounds.width > 100 && this.inPath(target, block, 'horizontal')) {
+	  //     if(target.x < nextX && nextX <= block.x){
 	  //       if(target.x + target._bounds.width >= block.x){
+	  //         debugger
 	  //         return true;
 	  //       }
-	  //     } else if(target.x > nextX){
+	  //     } else if(target.x > nextX && block.x + block._bounds.width < target.x){
 	  //       if(target.x <= block.x + block._bounds.width){
+	  //         debugger
 	  //         return true;
 	  //       }
 	  //     }
@@ -98,12 +96,40 @@
 	  //   return false;
 	  // }
 
+	  // inPath(target, block, orientation) {
+	  //   debugger
+	  //   if(orientation === 'vertical'){
+	  //     if(block.x === target.x) {
+	  //       return true;
+	  //     } else if(block.x > target.x) {
+	  //       return false;
+	  //     } else if(block.x < target.x && block._bounds.width > 100) {
+	  //       if(block.x + block._bounds.width < target.x) {
+	  //         return true;
+	  //       } else {
+	  //         return false;
+	  //       }
+	  //     }
+	  //   } else {
+	  //     if(block.y === target.y) {
+	  //       return true;
+	  //     } else if(block.y > target.y) {
+	  //       return false;
+	  //     } else if(block.y < target.y && block._bounds.height > 100) {
+	  //       if(block.y + block._bounds.height < target.y) {
+	  //         return true;
+	  //       } else {
+	  //         return false;
+	  //       }
+	  //     }
+	  //   }
+	  // }
+
 	  dragLimits(target, move) {
 	    const moveX = Math.round(move.x / this.grid) * this.grid;
 	    const moveY = Math.round(move.y / this.grid) * this.grid;
-	    console.log(moveX);
-	    console.log(moveY);
-	    if(target.getBounds().width > 100 && Math.abs(target.x - moveX <= 100)){
+
+	    if(target.getBounds().width > 100 ) {
 	      if(target.x - 100 >= 0 && target.x + target.getBounds().width < 600){
 	        target.x = moveX;
 	      } else if(target.x - 100 < 0 && move.x > target.x){
@@ -111,13 +137,12 @@
 	      } else if(target.x + target.getBounds().width >= 600 && move.x < target.x){
 	        target.x = moveX;
 	      }
-	    } else if(target.getBounds().height > 100 && Math.abs(target.y - moveY <= 100)){
+	    } else if(target.getBounds().height > 100 ){
 	      if(target.y - 100 >= 0 && target.y + target.getBounds().height < 600){
 	        target.y = moveY;
 	      } else if(target.y - 100 < 0 && move.y > target.y){
 	        target.y = moveY;
 	      } else if(target.y + target.getBounds().height >= 600 && move.y < target.y){
-	        debugger
 	        target.y = moveY;
 	      }
 	    }
@@ -147,19 +172,6 @@
 	    const nextX = Math.round(move.x / this.grid) * this.grid;
 	    const nextY = Math.round(move.y / this.grid) * this.grid;
 
-	    // this.blocks.forEach( (block) => {
-	    //   if(block.x === e.currentTarget.x && block.y === e.currentTarget.y){
-	    //     console.log("failed");
-	    //     console.log(this.checkCollision(nextX, nextY, e.currentTarget, block));
-	    //     console.log(`nextX: ${nextX}, nextY: ${nextY}`);
-	    //     console.log(`blockX: ${block.x}, blockY: ${block.y}`);
-	    //     // continue;
-	    //   } else if(this.checkCollision(nextX, nextY, e.currentTarget, block)){
-	    //
-	    //     collision = true;
-	    //   }
-	    // });
-
 	    for(let i = 0; i < this.blocks.length; i++){
 	      console.log(this.blocks[0].y);
 	      if(this.blocks[i].x === e.currentTarget.x && this.blocks[i].y === e.currentTarget.y){
@@ -179,93 +191,66 @@
 
 	}
 
-	let block = new createjs.Shape();
+	let block1 = new createjs.Shape();
 	let block2 = new createjs.Shape();
 	let block3 = new createjs.Shape();
-	block.graphics.beginFill("red").drawRect(0, 0, 100, 200);
-	block2.graphics.beginFill("blue").drawRect(0, 0, 200, 100);
-	block3.graphics.beginFill("green").drawRect(0, 0, 100, 300);
+	let block4 = new createjs.Shape();
+	let block5 = new createjs.Shape();
+	let block6 = new createjs.Shape();
+	let block7 = new createjs.Shape();
+	let block8 = new createjs.Shape();
 
-	block2.x = 100;
-	block2.y = 400;
+	block1.graphics.setStrokeStyle(3).beginStroke("black").beginFill("red").drawRoundRect(0, 0, 200, 100, 10);
+	block2.graphics.setStrokeStyle(3).beginStroke("black").beginFill("blue").drawRoundRect(0, 0, 100, 200, 10);
+	block3.graphics.setStrokeStyle(3).beginStroke("black").beginFill("green").drawRoundRect(0, 0, 100, 200, 10);
+	block4.graphics.setStrokeStyle(3).beginStroke("black").beginFill("yellow").drawRoundRect(0, 0, 200, 100, 10);
+	block5.graphics.setStrokeStyle(3).beginStroke("black").beginFill("pink").drawRoundRect(0, 0, 100, 300, 10);
+	block6.graphics.setStrokeStyle(3).beginStroke("black").beginFill("lightblue").drawRoundRect(0, 0, 100, 300, 10);
+	block7.graphics.setStrokeStyle(3).beginStroke("black").beginFill("orange").drawRoundRect(0, 0, 100, 300, 10);
+	block8.graphics.setStrokeStyle(3).beginStroke("black").beginFill("purple").drawRoundRect(0, 0, 300, 100, 10);
+
+
+	block1.x = 0;
+	block1.y = 200;
+
+	block2.x = 0;
+	block2.y = 0;
+
 	block3.x = 100;
 	block3.y = 0;
 
-	block.setBounds(0, 0, 100, 200);
-	block2.setBounds(0, 0, 200, 100);
-	block3.setBounds(0, 0, 100, 300);
+	block4.x = 0;
+	block4.y = 400;
 
-	const blocks = [block, block2, block3];
+	block5.x = 300;
+	block5.y = 0;
+
+	block6.x = 400;
+	block6.y = 0;
+
+	block7.x = 500;
+	block7.y = 0;
+
+	block8.x = 300;
+	block8.y = 300;
+
+	block1.setBounds(0, 0, 200, 100);
+	block2.setBounds(0, 0, 100, 200);
+	block3.setBounds(0, 0, 100, 200);
+	block4.setBounds(0, 0, 200, 100);
+	block5.setBounds(0, 0, 100, 300);
+	block6.setBounds(0, 0, 100, 300);
+	block7.setBounds(0, 0, 100, 300);
+	block8.setBounds(0, 0, 300, 100);
+
+	const blocks = [block1, block2, block3, block4, block5, block6, block7, block8];
 
 	const play = () => {
 	  const game = new Game(blocks);
 	  game.init();
 	}
-	// game.init();
 
 	document.addEventListener("DOMContentLoaded", () => play());
-
-	// const init = () => {
-	//   stage = new createjs.Stage("canvas");
-	//   block.graphics.beginFill("red").drawRect(0, 0, 100, 200);
-	//   block2.graphics.beginFill("blue").drawRect(0, 0, 200, 100);
-	//   block2.x = 100;
-	//   block2.y = 400;
-	//   block2.setBounds(0, 0, 200, 100);
-	//   block.setBounds(0, 0, 100, 200);
-	//   stage.addChild(block);
-	//   stage.addChild(block2);
-	//
-	//   enableDrag(block);
-	//   enableDrag(block2);
-	//
-	//   stage.update();
-	// }
-	//
-	// const dragLimits = (target, move) => {
-	//
-	//   if(target.getBounds().width > 100){
-	//     if(target.x - 100 >= 0 && target.x + target.getBounds().width < 600){
-	//       target.x = Math.round(move.x / grid) * grid;
-	//     } else if(target.x - 100 < 0 && move.x > target.x){
-	//       target.x = Math.round(move.x / grid) * grid;
-	//     } else if(target.x + target.getBounds().width >= 600 && move.x < target.x){
-	//       target.x = Math.round(move.x / grid) * grid;
-	//     }
-	//   } else if(target.getBounds().height > 100){
-	//     if(target.y - 100 >= 0 && target.y + target.getBounds().height < 600){
-	//       target.y = Math.round(move.y / grid) * grid;
-	//     } else if(target.y - 100 < 0 && move.y > target.y){
-	//       target.y = Math.round(move.y / grid) * grid;
-	//     } else if(target.y + target.getBounds().height >= 600 && move.y < target.y){
-	//       target.y = Math.round(move.y / grid) * grid;
-	//     }
-	//   }
-	// }
-	//
-	// const enableDrag = (obj) => {
-	//   obj.on("mousedown", dragstart);
-	//   obj.on("pressmove", drag);
-	// };
-	//
-	// const dragstart = (e) => {
-	//   dragging = false;
-	// }
-	//
-	// const drag = (e) => {
-	//   if (!dragging || !dragging.startCoords || !dragging.stageCoords) {
-	//     dragging = e.currentTarget;
-	//     dragging.startCoords = {x: dragging.x, y: dragging.y};
-	//     dragging.stageCoords = {x: e.stageX, y: e.stageY};
-	//   }
-	//
-	//   dragging.stageMove = {x: dragging.stageCoords.x - e.stageX, y: dragging.stageCoords.y - e.stageY};
-	//   dragging.objectMove = {x: dragging.startCoords.x - dragging.stageMove.x, y: dragging.startCoords.y - dragging.stageMove.y};
-	//
-	//   dragLimits(e.currentTarget, dragging.objectMove);
-	//
-	//   stage.update();
-	// }
 
 
 /***/ }
