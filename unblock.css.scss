@@ -1,11 +1,10 @@
 body {
   width: 900px;
-  background-color: lightblue;
+  background-image: url('wood_texture.jpg');
   padding: 30px;
 }
 
 .main {
-  /*padding: 30px;*/
   margin: 20px;
   width: 900px;
 }
@@ -19,11 +18,13 @@ body {
 
 .main-title {
   background-color: rgb(60, 27, 9);
+  background-image: url("darkwood.jpg");
   color: white;
-  width: 300px;
+  width: 400px;
   text-align: center;
-  margin-left: 400px;
-  border: 2px solid white;
+  margin-left: 350px;
+  border: 2px solid black;
+  padding: 10px 0;
   font-size: 50px;
 }
 

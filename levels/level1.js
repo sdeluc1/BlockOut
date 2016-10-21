@@ -1,3 +1,4 @@
+
 let block1 = new createjs.Shape();
 let block2 = new createjs.Shape();
 let block3 = new createjs.Shape();
@@ -7,14 +8,16 @@ let block6 = new createjs.Shape();
 let block7 = new createjs.Shape();
 let block8 = new createjs.Shape();
 
+const img = new Image();
+img.src = "./oak.jpg";
 block1.graphics.setStrokeStyle(3).beginStroke("black").beginFill("red").drawRoundRect(0, 0, 200, 100, 10);
-block2.graphics.setStrokeStyle(3).beginStroke("black").beginFill("blue").drawRoundRect(0, 0, 100, 200, 10);
-block3.graphics.setStrokeStyle(3).beginStroke("black").beginFill("green").drawRoundRect(0, 0, 100, 200, 10);
-block4.graphics.setStrokeStyle(3).beginStroke("black").beginFill("yellow").drawRoundRect(0, 0, 200, 100, 10);
-block5.graphics.setStrokeStyle(3).beginStroke("black").beginFill("pink").drawRoundRect(0, 0, 100, 300, 10);
-block6.graphics.setStrokeStyle(3).beginStroke("black").beginFill("lightblue").drawRoundRect(0, 0, 100, 300, 10);
-block7.graphics.setStrokeStyle(3).beginStroke("black").beginFill("orange").drawRoundRect(0, 0, 100, 300, 10);
-block8.graphics.setStrokeStyle(3).beginStroke("black").beginFill("purple").drawRoundRect(0, 0, 300, 100, 10);
+block2.graphics.setStrokeStyle(3).beginStroke("black").beginFill("#DEB887").drawRoundRect(0, 0, 100, 200, 10);
+block3.graphics.setStrokeStyle(3).beginStroke("black").beginFill("#DEB887").drawRoundRect(0, 0, 100, 200, 10);
+block4.graphics.setStrokeStyle(3).beginStroke("black").beginFill("#DEB887").drawRoundRect(0, 0, 200, 100, 10);
+block5.graphics.setStrokeStyle(3).beginStroke("black").beginFill("#DEB887").drawRoundRect(0, 0, 100, 300, 10);
+block6.graphics.setStrokeStyle(3).beginStroke("black").beginFill("#DEB887").drawRoundRect(0, 0, 100, 300, 10);
+block7.graphics.setStrokeStyle(3).beginStroke("black").beginFill("#DEB887").drawRoundRect(0, 0, 100, 300, 10);
+block8.graphics.setStrokeStyle(3).beginStroke("black").beginFill("#DEB887").drawRoundRect(0, 0, 300, 100, 10);
 
 
 block1.x = 0;
