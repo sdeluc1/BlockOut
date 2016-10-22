@@ -1,33 +1,110 @@
 body {
-  width: 900px;
+  width: 100%;
   background-image: url('wood_texture.jpg');
-  padding: 30px;
 }
 
 .main {
-  margin: 20px;
-  width: 900px;
+  width: 100%;
+  position: relative;
 }
 
 #canvas {
-  border: 5px solid rgb(79, 39, 3);
+  border: 10px solid rgb(79, 39, 3);
   background-color: rgb(231, 130, 57);
   cursor: pointer;
-  margin-left: 250px;
+  margin-bottom: 50px;
 }
 
 .main-title {
   background-color: rgb(60, 27, 9);
   background-image: url("darkwood.jpg");
-  color: white;
+  color: rgb(215, 218, 84);
   width: 400px;
   text-align: center;
-  margin-left: 350px;
+  margin-left: 100px;
   border: 2px solid black;
   padding: 10px 0;
   font-size: 50px;
+  text-shadow: 0px 1px 0px rgba(255,255,255,.5);
+  margin-bottom: 20px;
 }
 
 .game-board {
+  width: 600px;
   margin: auto;
+}
+
+#menu-modal {
+  display: none;
+  position: fixed;
+  left: 38%;
+  top: 30%;
+  width: 200px;
+  height: 250px;
+  padding: 50px;
+  background-color: rgb(231, 130, 57);
+  border: 8px solid rgb(79, 39, 3);
+  z-index: 200;
+}
+
+#levels-left {
+  float: left;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+  border-top: 2px solid black;
+}
+
+#levels-right {
+  float: left;
+  border-right: 2px solid black;
+  border-top: 2px solid black;
+}
+
+.level-box {
+  padding: 10px 15px;
+  width: 65px;
+  background-color: brown;
+  color: white;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  border-bottom: 2px solid black;
+  cursor: pointer;
+
+}
+
+#modal-background {
+  display: none;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+#choose-level {
+  background-image: url("darkwood.jpg");
+  width: 100px;
+  height: 40px;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+#levels-title {
+  background-image: url("darkwood.jpg");
+  color: white;
+  text-align: center;
+  height: 40px;
+  font-size: 22px;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: 2px solid black;
+  margin-left: 10px;
+}
+
+.levels {
+  margin-top: 20px;
 }

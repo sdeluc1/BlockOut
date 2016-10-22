@@ -46,24 +46,42 @@
 
 	const level1 = __webpack_require__(1);
 	const level2 = __webpack_require__(2);
+	const level3 = __webpack_require__(3);
+
+	const LEVELS = [
+	  level1,
+	  level2,
+	  level3
+	];
 
 	class Game {
-	  constructor(blocks){
+	  constructor(stage, blocks){
 	    this.blocks = blocks;
-	    this.stage = new createjs.Stage("canvas");
+	    this.stage = stage;
 	    this.dragging = {};
 	    this.grid = 100;
 	    this.moveCount = 0;
+	    this.currentLevel = 0;
 
 	    this.drag = this.drag.bind(this);
 	  }
 
 	  init() {
+	    level1(this.stage);
 	    this.blocks.forEach( (block) => {
 	      this.stage.addChild(block);
 	      this.enableDrag(block);
 	    });
 	    this.stage.update();
+	    document.getElementById('choose-level').addEventListener("click", this.chooseLevelOpen);
+	    document.getElementById('modal-background').addEventListener("click", this.chooseLevelClose);
+	    const buttons = document.getElementsByClassName('level-box');
+	    for(let i = 0; i < buttons.length; i++){
+	      buttons[i].addEventListener("click", (e) => {
+	        this.loadLevel(e.currentTarget.id);
+	      });
+	    }
+
 	  }
 
 	  checkCollision(nextX, nextY, block1, block2) {
@@ -80,24 +98,26 @@
 	    const moveX = Math.round(move.x / this.grid) * this.grid;
 	    const moveY = Math.round(move.y / this.grid) * this.grid;
 
-	    if(target.getBounds().width > 100 && Math.abs(moveX - target.x) === 100) {
+	    if(target.getBounds().width > 100 &&
+	      (Math.abs(moveX - target.x) === 100 || Math.abs(moveX - target.x) === 200 )) {
 	      if(target.x - 100 >= 0 && target.x + target.getBounds().width < 600){
-	        target.x = moveX;
-	      } else if(target.x - 100 < 0 && move.x > target.x){
-	        target.x = moveX;
-	      } else if(target.x + target.getBounds().width >= 600 && move.x < target.x){
-	        target.x = moveX;
+	        moveX < target.x ? target.x -= 100 : target.x += 100;
+	      } else if(target.x - 100 < 0 && moveX > target.x){
+	        target.x += 100;
+	      } else if(target.x + target.getBounds().width >= 600 && moveX < target.x){
+	        target.x -= 100;
 	      } else if(moveX === 500 && moveY === 200) {
 	        target.x = moveX;
 	        this.gameOver();
 	      }
-	    } else if(target.getBounds().height > 100 && Math.abs(moveY - target.y) === 100){
+	    } else if(target.getBounds().height > 100 &&
+	      (Math.abs(moveY - target.y) === 100 || Math.abs(moveY - target.y) === 200) ){
 	      if(target.y - 100 >= 0 && target.y + target.getBounds().height < 600){
-	        target.y = moveY;
-	      } else if(target.y - 100 < 0 && move.y > target.y){
-	        target.y = moveY;
-	      } else if(target.y + target.getBounds().height >= 600 && move.y < target.y){
-	        target.y = moveY;
+	        moveY < target.y ? target.y -= 100 : target.y += 100;
+	      } else if(target.y - 100 < 0 && moveY > target.y){
+	        target.y += 100;
+	      } else if(target.y + target.getBounds().height >= 600 && moveY < target.y){
+	        target.y -= 100;
 	      }
 	    }
 	  }
@@ -123,15 +143,22 @@
 
 	    let collision = false;
 	    const move = this.dragging.objectMove;
-	    const nextX = Math.round(move.x / this.grid) * this.grid;
-	    const nextY = Math.round(move.y / this.grid) * this.grid;
+	    let nextX, nextY;
+
+	    if(e.currentTarget.getBounds().width > 100){
+	      move.x > e.currentTarget.x ? nextX = e.currentTarget.x + 100 : nextX = e.currentTarget.x - 100;
+	      nextY = e.currentTarget.y;
+	    } else {
+	      move.y > e.currentTarget.y ? nextY = e.currentTarget.y + 100 : nextY = e.currentTarget.y - 100;
+	      nextX = e.currentTarget.x;
+	    }
 
 	    for(let i = 0; i < this.blocks.length; i++){
 	      if(this.blocks[i].x === e.currentTarget.x && this.blocks[i].y === e.currentTarget.y){
 	        continue;
 	      } else if(this.checkCollision(nextX, nextY, e.currentTarget, this.blocks[i])){
-
 	        collision = true;
+	        break;
 	      }
 	    }
 
@@ -144,15 +171,35 @@
 	  gameOver() {
 	    alert(`YOU WON!!!`);
 	    this.stage.removeAllChildren();
-	    this.blocks = level2;
+	    this.currentLevel += 1;
+	    this.blocks = LEVELS[this.currentLevel](this.stage);
+	    this.init();
+	  }
+
+	  chooseLevelOpen() {
+	    document.getElementById('menu-modal').style.display = "block";
+	    document.getElementById('modal-background').style.display = "block";
+	  }
+
+	  chooseLevelClose() {
+	    document.getElementById('menu-modal').style.display = "none";
+	    document.getElementById('modal-background').style.display = "none";
+	  }
+
+	  loadLevel(id) {
+	    this.stage.removeAllChildren();
+	    this.currentLevel = parseInt(id);
+	    this.blocks = LEVELS[this.currentLevel](this.stage);
+	    this.chooseLevelClose();
 	    this.init();
 	  }
 
 	}
-
 	const play = () => {
-	  const game = new Game(level1);
+	  const stage = new createjs.Stage("canvas");
+	  const game = new Game(stage, level1(stage));
 	  game.init();
+
 	}
 
 	document.addEventListener("DOMContentLoaded", () => play());
@@ -162,156 +209,279 @@
 /* 1 */
 /***/ function(module, exports) {
 
-	
-	let block1 = new createjs.Shape();
-	let block2 = new createjs.Shape();
-	let block3 = new createjs.Shape();
-	let block4 = new createjs.Shape();
-	let block5 = new createjs.Shape();
-	let block6 = new createjs.Shape();
-	let block7 = new createjs.Shape();
-	let block8 = new createjs.Shape();
+	const loadLevel1 = (stage) => {
 
-	const img = new Image();
-	img.src = "./oak.jpg";
-	block1.graphics.setStrokeStyle(3).beginStroke("black").beginFill("red").drawRoundRect(0, 0, 200, 100, 10);
-	block2.graphics.setStrokeStyle(3).beginStroke("black").beginFill("#DEB887").drawRoundRect(0, 0, 100, 200, 10);
-	block3.graphics.setStrokeStyle(3).beginStroke("black").beginFill("#DEB887").drawRoundRect(0, 0, 100, 200, 10);
-	block4.graphics.setStrokeStyle(3).beginStroke("black").beginFill("#DEB887").drawRoundRect(0, 0, 200, 100, 10);
-	block5.graphics.setStrokeStyle(3).beginStroke("black").beginFill("#DEB887").drawRoundRect(0, 0, 100, 300, 10);
-	block6.graphics.setStrokeStyle(3).beginStroke("black").beginFill("#DEB887").drawRoundRect(0, 0, 100, 300, 10);
-	block7.graphics.setStrokeStyle(3).beginStroke("black").beginFill("#DEB887").drawRoundRect(0, 0, 100, 300, 10);
-	block8.graphics.setStrokeStyle(3).beginStroke("black").beginFill("#DEB887").drawRoundRect(0, 0, 300, 100, 10);
+	  let block1 = new createjs.Shape();
+	  let block2 = new createjs.Shape();
+	  let block3 = new createjs.Shape();
+	  let block4 = new createjs.Shape();
+	  let block5 = new createjs.Shape();
+	  let block6 = new createjs.Shape();
+	  let block7 = new createjs.Shape();
+	  let block8 = new createjs.Shape();
 
+	  const imgV = new Image();
+	  imgV.src = "./oak-v.jpg";
+	  imgV.onload = () => {
 
-	block1.x = 0;
-	block1.y = 200;
+	    block2.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 100, 200, 10);
+	    block3.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 100, 200, 10);
+	    block5.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 100, 300, 10);
+	    block6.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 100, 300, 10);
+	    block7.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 100, 300, 10);
 
-	block2.x = 0;
-	block2.y = 0;
+	    stage.update();
+	  }
 
-	block3.x = 100;
-	block3.y = 0;
+	  const imgH = new Image();
+	  imgH.src = "./oak-h.jpg";
+	  imgH.onload = () => {
+	    block1.graphics.setStrokeStyle(3).beginStroke("black").beginFill("red").drawRoundRect(0, 0, 200, 100, 10);
+	    block4.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 200, 100, 10);
+	    block8.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 300, 100, 10);
 
-	block4.x = 0;
-	block4.y = 400;
+	    stage.update();
+	  }
 
-	block5.x = 300;
-	block5.y = 0;
+	  block1.x = 0;
+	  block1.y = 200;
 
-	block6.x = 400;
-	block6.y = 0;
+	  block2.x = 0;
+	  block2.y = 0;
 
-	block7.x = 500;
-	block7.y = 0;
+	  block3.x = 100;
+	  block3.y = 0;
 
-	block8.x = 300;
-	block8.y = 300;
+	  block4.x = 0;
+	  block4.y = 400;
 
-	block1.setBounds(0, 0, 200, 100);
-	block2.setBounds(0, 0, 100, 200);
-	block3.setBounds(0, 0, 100, 200);
-	block4.setBounds(0, 0, 200, 100);
-	block5.setBounds(0, 0, 100, 300);
-	block6.setBounds(0, 0, 100, 300);
-	block7.setBounds(0, 0, 100, 300);
-	block8.setBounds(0, 0, 300, 100);
+	  block5.x = 300;
+	  block5.y = 0;
 
-	const blocks = [block1, block2, block3, block4, block5, block6, block7, block8];
+	  block6.x = 400;
+	  block6.y = 0;
 
-	module.exports = blocks;
+	  block7.x = 500;
+	  block7.y = 0;
+
+	  block8.x = 300;
+	  block8.y = 300;
+
+	  block1.setBounds(0, 0, 200, 100);
+	  block2.setBounds(0, 0, 100, 200);
+	  block3.setBounds(0, 0, 100, 200);
+	  block4.setBounds(0, 0, 200, 100);
+	  block5.setBounds(0, 0, 100, 300);
+	  block6.setBounds(0, 0, 100, 300);
+	  block7.setBounds(0, 0, 100, 300);
+	  block8.setBounds(0, 0, 300, 100);
+
+	  const blocks = [block1, block2, block3, block4, block5, block6, block7, block8];
+	  return blocks;
+	}
+
+	module.exports = loadLevel1;
 
 
 /***/ },
 /* 2 */
 /***/ function(module, exports) {
 
-	let block1 = new createjs.Shape();
-	let block2 = new createjs.Shape();
-	let block3 = new createjs.Shape();
-	let block4 = new createjs.Shape();
-	let block5 = new createjs.Shape();
-	let block6 = new createjs.Shape();
-	let block7 = new createjs.Shape();
-	let block8 = new createjs.Shape();
-	let block9 = new createjs.Shape();
-	let block10 = new createjs.Shape();
-	let block11 = new createjs.Shape();
-	let block12 = new createjs.Shape();
+	const loadLevel2 = (stage) => {
 
-	const img = new Image();
-	img.src = "./oak.jpg";
-	img.onload = () => {
-	  block1.graphics.setStrokeStyle(3).beginStroke("black").beginFill("red").drawRoundRect(0, 0, 200, 100, 10);
-	  block2.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(img).drawRoundRect(0, 0, 100, 200, 10);
-	  block3.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(img).drawRoundRect(0, 0, 200, 100, 10);
-	  block4.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(img).drawRoundRect(0, 0, 300, 100, 10);
-	  block5.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(img).drawRoundRect(0, 0, 300, 100, 10);
-	  block6.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(img).drawRoundRect(0, 0, 200, 100, 10);
-	  block7.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(img).drawRoundRect(0, 0, 100, 200, 10);
-	  block8.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(img).drawRoundRect(0, 0, 300, 100, 10);
-	  block9.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(img).drawRoundRect(0, 0, 200, 100, 10);
-	  block10.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(img).drawRoundRect(0, 0, 200, 100, 10);
-	  block11.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(img).drawRoundRect(0, 0, 200, 100, 10);
-	  block12.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(img).drawRoundRect(0, 0, 100, 200, 10);
+	  let block1 = new createjs.Shape();
+	  let block2 = new createjs.Shape();
+	  let block3 = new createjs.Shape();
+	  let block4 = new createjs.Shape();
+	  let block5 = new createjs.Shape();
+	  let block6 = new createjs.Shape();
+	  let block7 = new createjs.Shape();
+	  let block8 = new createjs.Shape();
+	  let block9 = new createjs.Shape();
+	  let block10 = new createjs.Shape();
+	  let block11 = new createjs.Shape();
+	  let block12 = new createjs.Shape();
+
+	  const imgV = new Image();
+	  imgV.src = "./oak-v.jpg";
+	  imgV.onload = () => {
+
+	    block2.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 100, 200, 10);
+	    block7.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 100, 200, 10);
+	    block12.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 100, 200, 10);
+	    stage.update();
+	  }
+
+	  const imgH = new Image();
+	  imgH.src = "./oak-h.jpg";
+	  imgH.onload = () => {
+	    block1.graphics.setStrokeStyle(3).beginStroke("black").beginFill("red").drawRoundRect(0, 0, 200, 100, 10);
+	    block3.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 200, 100, 10);
+	    block4.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 300, 100, 10);
+	    block5.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 300, 100, 10);
+	    block6.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 200, 100, 10);
+	    block8.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 300, 100, 10);
+	    block9.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 200, 100, 10);
+	    block10.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 200, 100, 10);
+	    block11.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 200, 100, 10);
+	    stage.update();
+	  }
+
+
+
+	  block1.x = 0;
+	  block1.y = 200;
+
+	  block2.x = 0;
+	  block2.y = 0;
+
+	  block3.x = 0;
+	  block3.y = 300;
+
+	  block4.x = 100;
+	  block4.y = 100;
+
+	  block5.x = 100;
+	  block5.y = 400;
+
+	  block6.x = 200;
+	  block6.y = 0;
+
+	  block7.x = 300;
+	  block7.y = 200;
+
+	  block8.x = 300;
+	  block8.y = 500;
+
+	  block9.x = 400;
+	  block9.y = 0;
+
+	  block10.x = 400;
+	  block10.y = 100;
+
+	  block11.x = 400;
+	  block11.y = 400;
+
+	  block12.x = 500;
+	  block12.y = 200;
+
+	  block1.setBounds(0, 0, 200, 100);
+	  block2.setBounds(0, 0, 100, 200);
+	  block3.setBounds(0, 0, 200, 100);
+	  block4.setBounds(0, 0, 300, 100);
+	  block5.setBounds(0, 0, 300, 100);
+	  block6.setBounds(0, 0, 200, 100);
+	  block7.setBounds(0, 0, 100, 200);
+	  block8.setBounds(0, 0, 300, 100);
+	  block9.setBounds(0, 0, 200, 100);
+	  block10.setBounds(0, 0, 200, 100);
+	  block11.setBounds(0, 0, 200, 100);
+	  block12.setBounds(0, 0, 100, 200);
+
+	  const blocks = [block1, block2, block3, block4,
+	    block5, block6, block7, block8,
+	    block9, block10, block11, block12];
+	  return blocks;
 	}
 
+	module.exports = loadLevel2;
 
 
-	block1.x = 0;
-	block1.y = 200;
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
 
-	block2.x = 0;
-	block2.y = 0;
+	const loadLevel3 = (stage) => {
 
-	block3.x = 0;
-	block3.y = 300;
+	  let block1 = new createjs.Shape();
+	  let block2 = new createjs.Shape();
+	  let block3 = new createjs.Shape();
+	  let block4 = new createjs.Shape();
+	  let block5 = new createjs.Shape();
+	  let block6 = new createjs.Shape();
+	  let block7 = new createjs.Shape();
+	  let block8 = new createjs.Shape();
+	  let block9 = new createjs.Shape();
+	  let block10 = new createjs.Shape();
+	  let block11 = new createjs.Shape();
 
-	block4.x = 100;
-	block4.y = 100;
+	  const imgV = new Image();
+	  imgV.src = "./oak-v.jpg";
+	  imgV.onload = () => {
 
-	block5.x = 100;
-	block5.y = 400;
+	    block3.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 100, 200, 10);
+	    block4.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 100, 200, 10);
+	    block5.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 100, 200, 10);
+	    block6.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 100, 200, 10);
+	    block8.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 100, 200, 10);
+	    block9.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 100, 200, 10);
+	    block10.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 100, 300, 10);
+	    block11.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 100, 200, 10);
 
-	block6.x = 200;
-	block6.y = 0;
+	    stage.update();
+	  }
 
-	block7.x = 300;
-	block7.y = 200;
+	  const imgH = new Image();
+	  imgH.src = "./oak-h.jpg";
+	  imgH.onload = () => {
+	    block1.graphics.setStrokeStyle(3).beginStroke("black").beginFill("red").drawRoundRect(0, 0, 200, 100, 10);
+	    block2.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 200, 100, 10);
+	    block7.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 200, 100, 10);
+	    stage.update();
+	  }
 
-	block8.x = 300;
-	block8.y = 500;
+	  block1.x = 0;
+	  block1.y = 200;
 
-	block9.x = 400;
-	block9.y = 0;
+	  block2.x = 0;
+	  block2.y = 300;
 
-	block10.x = 400;
-	block10.y = 100;
+	  block3.x = 0;
+	  block3.y = 400;
 
-	block11.x = 400;
-	block11.y = 400;
+	  block4.x = 100;
+	  block4.y = 400;
 
-	block12.x = 500;
-	block12.y = 200;
+	  block5.x = 200;
+	  block5.y = 0;
 
-	block1.setBounds(0, 0, 200, 100);
-	block2.setBounds(0, 0, 100, 200);
-	block3.setBounds(0, 0, 200, 100);
-	block4.setBounds(0, 0, 300, 100);
-	block5.setBounds(0, 0, 300, 100);
-	block6.setBounds(0, 0, 200, 100);
-	block7.setBounds(0, 0, 100, 200);
-	block8.setBounds(0, 0, 300, 100);
-	block9.setBounds(0, 0, 200, 100);
-	block10.setBounds(0, 0, 200, 100);
-	block11.setBounds(0, 0, 200, 100);
-	block12.setBounds(0, 0, 100, 200);
+	  block6.x = 200;
+	  block6.y = 200;
 
-	const blocks = [block1, block2, block3, block4,
-	                block5, block6, block7, block8,
-	                block9, block10, block11, block12];
+	  block7.x = 200;
+	  block7.y = 400;
 
-	module.exports = blocks;
+	  block8.x = 300;
+	  block8.y = 0;
+
+	  block9.x = 300;
+	  block9.y = 200;
+
+	  block10.x = 400;
+	  block10.y = 200;
+
+	  block11.x = 500;
+	  block11.y = 100;
+
+	  block1.setBounds(0, 0, 200, 100);
+	  block2.setBounds(0, 0, 200, 100);
+	  block3.setBounds(0, 0, 100, 200);
+	  block4.setBounds(0, 0, 100, 200);
+	  block5.setBounds(0, 0, 100, 200);
+	  block6.setBounds(0, 0, 100, 200);
+	  block7.setBounds(0, 0, 200, 100);
+	  block8.setBounds(0, 0, 100, 200);
+	  block9.setBounds(0, 0, 100, 200);
+	  block10.setBounds(0, 0, 100, 300);
+	  block11.setBounds(0, 0, 100, 200);
+
+	  const blocks = [block1, block2, block3, block4,
+	                  block5, block6, block7, block8,
+	                  block9, block10, block11];
+	  return blocks;
+	}
+
+	module.exports = loadLevel3;
 
 
 /***/ }

@@ -1,23 +1,41 @@
 const level1 = require('./levels/level1.js');
 const level2 = require('./levels/level2.js');
+const level3 = require('./levels/level3.js');
+
+const LEVELS = [
+  level1,
+  level2,
+  level3
+];
 
 class Game {
-  constructor(blocks){
+  constructor(stage, blocks){
     this.blocks = blocks;
-    this.stage = new createjs.Stage("canvas");
+    this.stage = stage;
     this.dragging = {};
     this.grid = 100;
     this.moveCount = 0;
+    this.currentLevel = 0;
 
     this.drag = this.drag.bind(this);
   }
 
   init() {
+    level1(this.stage);
     this.blocks.forEach( (block) => {
       this.stage.addChild(block);
       this.enableDrag(block);
     });
     this.stage.update();
+    document.getElementById('choose-level').addEventListener("click", this.chooseLevelOpen);
+    document.getElementById('modal-background').addEventListener("click", this.chooseLevelClose);
+    const buttons = document.getElementsByClassName('level-box');
+    for(let i = 0; i < buttons.length; i++){
+      buttons[i].addEventListener("click", (e) => {
+        this.loadLevel(e.currentTarget.id);
+      });
+    }
+
   }
 
   checkCollision(nextX, nextY, block1, block2) {
@@ -34,24 +52,26 @@ class Game {
     const moveX = Math.round(move.x / this.grid) * this.grid;
     const moveY = Math.round(move.y / this.grid) * this.grid;
 
-    if(target.getBounds().width > 100 && Math.abs(moveX - target.x) === 100) {
+    if(target.getBounds().width > 100 &&
+      (Math.abs(moveX - target.x) === 100 || Math.abs(moveX - target.x) === 200 )) {
       if(target.x - 100 >= 0 && target.x + target.getBounds().width < 600){
-        target.x = moveX;
-      } else if(target.x - 100 < 0 && move.x > target.x){
-        target.x = moveX;
-      } else if(target.x + target.getBounds().width >= 600 && move.x < target.x){
-        target.x = moveX;
+        moveX < target.x ? target.x -= 100 : target.x += 100;
+      } else if(target.x - 100 < 0 && moveX > target.x){
+        target.x += 100;
+      } else if(target.x + target.getBounds().width >= 600 && moveX < target.x){
+        target.x -= 100;
       } else if(moveX === 500 && moveY === 200) {
         target.x = moveX;
         this.gameOver();
       }
-    } else if(target.getBounds().height > 100 && Math.abs(moveY - target.y) === 100){
+    } else if(target.getBounds().height > 100 &&
+      (Math.abs(moveY - target.y) === 100 || Math.abs(moveY - target.y) === 200) ){
       if(target.y - 100 >= 0 && target.y + target.getBounds().height < 600){
-        target.y = moveY;
-      } else if(target.y - 100 < 0 && move.y > target.y){
-        target.y = moveY;
-      } else if(target.y + target.getBounds().height >= 600 && move.y < target.y){
-        target.y = moveY;
+        moveY < target.y ? target.y -= 100 : target.y += 100;
+      } else if(target.y - 100 < 0 && moveY > target.y){
+        target.y += 100;
+      } else if(target.y + target.getBounds().height >= 600 && moveY < target.y){
+        target.y -= 100;
       }
     }
   }
@@ -77,15 +97,22 @@ class Game {
 
     let collision = false;
     const move = this.dragging.objectMove;
-    const nextX = Math.round(move.x / this.grid) * this.grid;
-    const nextY = Math.round(move.y / this.grid) * this.grid;
+    let nextX, nextY;
+
+    if(e.currentTarget.getBounds().width > 100){
+      move.x > e.currentTarget.x ? nextX = e.currentTarget.x + 100 : nextX = e.currentTarget.x - 100;
+      nextY = e.currentTarget.y;
+    } else {
+      move.y > e.currentTarget.y ? nextY = e.currentTarget.y + 100 : nextY = e.currentTarget.y - 100;
+      nextX = e.currentTarget.x;
+    }
 
     for(let i = 0; i < this.blocks.length; i++){
       if(this.blocks[i].x === e.currentTarget.x && this.blocks[i].y === e.currentTarget.y){
         continue;
       } else if(this.checkCollision(nextX, nextY, e.currentTarget, this.blocks[i])){
-
         collision = true;
+        break;
       }
     }
 
@@ -98,15 +125,35 @@ class Game {
   gameOver() {
     alert(`YOU WON!!!`);
     this.stage.removeAllChildren();
-    this.blocks = level2;
+    this.currentLevel += 1;
+    this.blocks = LEVELS[this.currentLevel](this.stage);
+    this.init();
+  }
+
+  chooseLevelOpen() {
+    document.getElementById('menu-modal').style.display = "block";
+    document.getElementById('modal-background').style.display = "block";
+  }
+
+  chooseLevelClose() {
+    document.getElementById('menu-modal').style.display = "none";
+    document.getElementById('modal-background').style.display = "none";
+  }
+
+  loadLevel(id) {
+    this.stage.removeAllChildren();
+    this.currentLevel = parseInt(id);
+    this.blocks = LEVELS[this.currentLevel](this.stage);
+    this.chooseLevelClose();
     this.init();
   }
 
 }
-
 const play = () => {
-  const game = new Game(level1);
+  const stage = new createjs.Stage("canvas");
+  const game = new Game(stage, level1(stage));
   game.init();
+
 }
 
 document.addEventListener("DOMContentLoaded", () => play());
