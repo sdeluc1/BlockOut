@@ -233,7 +233,7 @@
 	  let block8 = new createjs.Shape();
 
 	  const imgV = new Image();
-	  imgV.src = "./oak-v.jpg";
+	  imgV.src = "./images/oak-v.jpg";
 	  imgV.onload = () => {
 
 	    block2.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
@@ -246,7 +246,7 @@
 	  }
 
 	  const imgH = new Image();
-	  imgH.src = "./oak-h.jpg";
+	  imgH.src = "./images/oak-h.jpg";
 	  imgH.onload = () => {
 	    block1.graphics.setStrokeStyle(3).beginStroke("black").beginFill("red").drawRoundRect(0, 0, 160, 80, 10);
 	    block4.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
@@ -315,7 +315,7 @@
 	  let block12 = new createjs.Shape();
 
 	  const imgV = new Image();
-	  imgV.src = "./oak-v.jpg";
+	  imgV.src = "./images/oak-v.jpg";
 	  imgV.onload = () => {
 
 	    block2.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
@@ -325,7 +325,7 @@
 	  }
 
 	  const imgH = new Image();
-	  imgH.src = "./oak-h.jpg";
+	  imgH.src = "./images/oak-h.jpg";
 	  imgH.onload = () => {
 	    block1.graphics.setStrokeStyle(3).beginStroke("black").beginFill("red").drawRoundRect(0, 0, 160, 80, 10);
 	    block3.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
@@ -418,7 +418,7 @@
 	  let block11 = new createjs.Shape();
 
 	  const imgV = new Image();
-	  imgV.src = "./oak-v.jpg";
+	  imgV.src = "./images/oak-v.jpg";
 	  imgV.onload = () => {
 
 	    block3.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
@@ -434,7 +434,7 @@
 	  }
 
 	  const imgH = new Image();
-	  imgH.src = "./oak-h.jpg";
+	  imgH.src = "./images/oak-h.jpg";
 	  imgH.onload = () => {
 	    block1.graphics.setStrokeStyle(3).beginStroke("black").beginFill("red").drawRoundRect(0, 0, 160, 80, 10);
 	    block2.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);

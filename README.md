@@ -30,7 +30,7 @@ This app will consist of a single screen with game board, game controls, and nav
 and the About modal.  Game controls will include a button to undo a single move, a button to reset the game board, and
 a button that opens a modal where the player can select a different level or review the rules of the game.
 
-![wireframe](https://github.com/sdeluc1/UnblockMe/blob/master/UnblockMe.png)
+![wireframe](https://github.com/sdeluc1/UnblockMe/blob/master/BlockOut.png)
 
 ### Architecture and Technologies
 
