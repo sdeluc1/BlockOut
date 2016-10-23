@@ -13,7 +13,7 @@ class Game {
     this.blocks = blocks;
     this.stage = stage;
     this.dragging = {};
-    this.grid = 100;
+    this.grid = 80;
     this.moveCount = 0;
     this.currentLevel = 0;
 
@@ -28,7 +28,7 @@ class Game {
     });
     this.stage.update();
     document.getElementById('choose-level').addEventListener("click", this.chooseLevelOpen);
-    document.getElementById('modal-background').addEventListener("click", this.chooseLevelClose);
+    document.getElementById('modal-background').addEventListener("click", this.modalClose);
     const buttons = document.getElementsByClassName('level-box');
     for(let i = 0; i < buttons.length; i++){
       buttons[i].addEventListener("click", (e) => {
@@ -52,26 +52,26 @@ class Game {
     const moveX = Math.round(move.x / this.grid) * this.grid;
     const moveY = Math.round(move.y / this.grid) * this.grid;
 
-    if(target.getBounds().width > 100 &&
-      (Math.abs(moveX - target.x) === 100 || Math.abs(moveX - target.x) === 200 )) {
-      if(target.x - 100 >= 0 && target.x + target.getBounds().width < 600){
-        moveX < target.x ? target.x -= 100 : target.x += 100;
-      } else if(target.x - 100 < 0 && moveX > target.x){
-        target.x += 100;
-      } else if(target.x + target.getBounds().width >= 600 && moveX < target.x){
-        target.x -= 100;
-      } else if(moveX === 500 && moveY === 200) {
+    if(target.getBounds().width > 80 &&
+      (Math.abs(moveX - target.x) === 80 || Math.abs(moveX - target.x) === 160 )) {
+      if(target.x - 80 >= 0 && target.x + target.getBounds().width < 480){
+        moveX < target.x ? target.x -= 80 : target.x += 80;
+      } else if(target.x - 80 < 0 && moveX > target.x){
+        target.x += 80;
+      } else if(target.x + target.getBounds().width >= 480 && moveX < target.x){
+        target.x -= 80;
+      } else if(moveX === 400 && moveY === 160) {
         target.x = moveX;
         this.gameOver();
       }
-    } else if(target.getBounds().height > 100 &&
-      (Math.abs(moveY - target.y) === 100 || Math.abs(moveY - target.y) === 200) ){
-      if(target.y - 100 >= 0 && target.y + target.getBounds().height < 600){
-        moveY < target.y ? target.y -= 100 : target.y += 100;
-      } else if(target.y - 100 < 0 && moveY > target.y){
-        target.y += 100;
-      } else if(target.y + target.getBounds().height >= 600 && moveY < target.y){
-        target.y -= 100;
+    } else if(target.getBounds().height > 80 &&
+      (Math.abs(moveY - target.y) === 80 || Math.abs(moveY - target.y) === 160) ){
+      if(target.y - 80 >= 0 && target.y + target.getBounds().height < 480){
+        moveY < target.y ? target.y -= 80 : target.y += 80;
+      } else if(target.y - 80 < 0 && moveY > target.y){
+        target.y += 80;
+      } else if(target.y + target.getBounds().height >= 480 && moveY < target.y){
+        target.y -= 80;
       }
     }
   }
@@ -99,11 +99,11 @@ class Game {
     const move = this.dragging.objectMove;
     let nextX, nextY;
 
-    if(e.currentTarget.getBounds().width > 100){
-      move.x > e.currentTarget.x ? nextX = e.currentTarget.x + 100 : nextX = e.currentTarget.x - 100;
+    if(e.currentTarget.getBounds().width > 80){
+      move.x > e.currentTarget.x ? nextX = e.currentTarget.x + 80 : nextX = e.currentTarget.x - 80;
       nextY = e.currentTarget.y;
     } else {
-      move.y > e.currentTarget.y ? nextY = e.currentTarget.y + 100 : nextY = e.currentTarget.y - 100;
+      move.y > e.currentTarget.y ? nextY = e.currentTarget.y + 80 : nextY = e.currentTarget.y - 80;
       nextX = e.currentTarget.x;
     }
 
@@ -123,7 +123,12 @@ class Game {
   }
 
   gameOver() {
-    alert(`YOU WON!!!`);
+    document.getElementById('win-modal').style.display = "block";
+    document.getElementById('modal-background').style.display = "block";
+    setTimeout( () => {
+      document.getElementById('win-modal').style.display = "none";
+      document.getElementById('modal-background').style.display = "none";
+    }, 2000);
     this.stage.removeAllChildren();
     this.currentLevel += 1;
     this.blocks = LEVELS[this.currentLevel](this.stage);
@@ -135,17 +140,22 @@ class Game {
     document.getElementById('modal-background').style.display = "block";
   }
 
-  chooseLevelClose() {
+  modalClose() {
     document.getElementById('menu-modal').style.display = "none";
     document.getElementById('modal-background').style.display = "none";
+    document.getElementById('win-modal').style.display = "none";
   }
 
   loadLevel(id) {
     this.stage.removeAllChildren();
     this.currentLevel = parseInt(id);
     this.blocks = LEVELS[this.currentLevel](this.stage);
-    this.chooseLevelClose();
+    this.modalClose();
     this.init();
+  }
+
+  reset() {
+
   }
 
 }
