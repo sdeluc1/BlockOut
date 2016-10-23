@@ -1,8 +1,8 @@
-##Unblock Me
+##Block Out
 
 ### Background
 
-Unblock Me is a puzzle game where the player's goal is to shift the positions of rectangular blocks on a
+Block Out is a puzzle game where the player's goal is to shift the positions of rectangular blocks on a
 game board in order to free up a target block and move it toward the exit point. Blocks can have different lengths
 and can only be moved in one direction. The difficulty increases with the completion of each level.
 

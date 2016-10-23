@@ -64,6 +64,7 @@
 	    this.currentLevel = 0;
 
 	    this.drag = this.drag.bind(this);
+	    this.reset = this.reset.bind(this);
 	  }
 
 	  init() {
@@ -75,10 +76,11 @@
 	    this.stage.update();
 	    document.getElementById('choose-level').addEventListener("click", this.chooseLevelOpen);
 	    document.getElementById('modal-background').addEventListener("click", this.modalClose);
+	    document.getElementById('reset-level').addEventListener("click", this.reset);
 	    const buttons = document.getElementsByClassName('level-box');
 	    for(let i = 0; i < buttons.length; i++){
 	      buttons[i].addEventListener("click", (e) => {
-	        this.loadLevel(e.currentTarget.id);
+	        this.loadLevel(parseInt(e.currentTarget.id));
 	      });
 	    }
 
@@ -106,7 +108,7 @@
 	        target.x += 80;
 	      } else if(target.x + target.getBounds().width >= 480 && moveX < target.x){
 	        target.x -= 80;
-	      } else if(moveX === 400 && moveY === 160) {
+	      } else if(moveX >= 400 && moveY === 160 || this.blocks[0].x === 320) {
 	        target.x = moveX;
 	        this.gameOver();
 	      }
@@ -194,14 +196,14 @@
 
 	  loadLevel(id) {
 	    this.stage.removeAllChildren();
-	    this.currentLevel = parseInt(id);
+	    this.currentLevel = id;
 	    this.blocks = LEVELS[this.currentLevel](this.stage);
 	    this.modalClose();
 	    this.init();
 	  }
 
 	  reset() {
-
+	    this.loadLevel(this.currentLevel);
 	  }
 
 	}
