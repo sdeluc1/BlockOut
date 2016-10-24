@@ -1,6 +1,6 @@
 body {
   width: 100%;
-  background-image: url('images/wood_texture.jpg');
+  background-image: url('../images/wood_texture.jpg');
   padding-top: 10px;
   font-family: "Arial Black", Gadget, sans-serif;
 }
@@ -18,7 +18,7 @@ body {
 }
 
 .main-title {
-  background-image: url("images/darkwood.jpg");
+  background-image: url("../images/darkwood.jpg");
   color: rgb(193, 180, 20);
   width: 480px;
   text-align: center;
@@ -98,7 +98,7 @@ body {
 }
 
 .button {
-  background-image: url("images/darkwood.jpg");
+  background-image: url("../images/darkwood.jpg");
   width: 200px;
   height: 40px;
   color: rgb(193, 180, 20);
@@ -110,7 +110,7 @@ body {
 }
 
 #levels-title {
-  background-image: url("images/darkwood.jpg");
+  background-image: url("../images/darkwood.jpg");
   color: white;
   text-align: center;
   height: 30px;
