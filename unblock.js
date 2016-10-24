@@ -1,12 +1,4 @@
-const level1 = require('./levels/level1.js');
-const level2 = require('./levels/level2.js');
-const level3 = require('./levels/level3.js');
-
-const LEVELS = [
-  level1,
-  level2,
-  level3
-];
+const LEVELS = require('./levels/all_levels.js');
 
 class Game {
   constructor(stage, blocks){
@@ -22,7 +14,8 @@ class Game {
   }
 
   init() {
-    level1(this.stage);
+    debugger
+    LEVELS[0](this.stage);
     this.blocks.forEach( (block) => {
       this.stage.addChild(block);
       this.enableDrag(block);
@@ -163,7 +156,7 @@ class Game {
 }
 const play = () => {
   const stage = new createjs.Stage("canvas");
-  const game = new Game(stage, level1(stage));
+  const game = new Game(stage, LEVELS[0](stage));
   game.init();
 
 }
