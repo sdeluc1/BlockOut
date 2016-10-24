@@ -11,10 +11,10 @@ class Game {
 
     this.drag = this.drag.bind(this);
     this.reset = this.reset.bind(this);
+    this.chooseLevelOpen = this.chooseLevelOpen.bind(this);
   }
 
   init() {
-    debugger
     LEVELS[0](this.stage);
     this.blocks.forEach( (block) => {
       this.stage.addChild(block);
@@ -24,10 +24,12 @@ class Game {
     document.getElementById('choose-level').addEventListener("click", this.chooseLevelOpen);
     document.getElementById('modal-background').addEventListener("click", this.modalClose);
     document.getElementById('reset-level').addEventListener("click", this.reset);
+    document.getElementById('instructions').addEventListener("click", this.instruct);
     const buttons = document.getElementsByClassName('level-box');
     for(let i = 0; i < buttons.length; i++){
       buttons[i].addEventListener("click", (e) => {
         this.loadLevel(parseInt(e.currentTarget.id));
+        document.getElementById(`${this.previous}`).className = "level-box";
       });
     }
 
@@ -57,7 +59,7 @@ class Game {
         target.x -= 80;
       } else if(moveX >= 400 && moveY === 160 || this.blocks[0].x === 320) {
         target.x = moveX;
-        this.gameOver();
+        this.solved();
       }
     } else if(target.getBounds().height > 80 &&
       (Math.abs(moveY - target.y) === 80 || Math.abs(moveY - target.y) === 160) ){
@@ -117,7 +119,7 @@ class Game {
     this.stage.update();
   }
 
-  gameOver() {
+  solved() {
     document.getElementById('win-modal').style.display = "block";
     document.getElementById('modal-background').style.display = "block";
     setTimeout( () => {
@@ -133,16 +135,19 @@ class Game {
   chooseLevelOpen() {
     document.getElementById('menu-modal').style.display = "block";
     document.getElementById('modal-background').style.display = "block";
+    this.currentLevelSelected();
   }
 
   modalClose() {
     document.getElementById('menu-modal').style.display = "none";
     document.getElementById('modal-background').style.display = "none";
     document.getElementById('win-modal').style.display = "none";
+    document.getElementById('instruct-modal').style.display = "none";
   }
 
   loadLevel(id) {
     this.stage.removeAllChildren();
+    this.previous = this.currentLevel;
     this.currentLevel = id;
     this.blocks = LEVELS[this.currentLevel](this.stage);
     this.modalClose();
@@ -151,6 +156,16 @@ class Game {
 
   reset() {
     this.loadLevel(this.currentLevel);
+  }
+
+  instruct() {
+    document.getElementById('instruct-modal').style.display = "block";
+    document.getElementById('modal-background').style.display = "block";
+  }
+
+  currentLevelSelected() {
+    this.previous = this.previous || this.currentLevel;
+    document.getElementById(`${this.currentLevel}`).className = "curr-level";
   }
 
 }
