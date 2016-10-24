@@ -174,7 +174,7 @@ body {
   text-align: center;
 }
 
-#impossible {
+.impossible {
   width: 162px;
   float: left;
   padding: 10px 15px;
@@ -188,7 +188,7 @@ body {
   cursor: pointer;
 }
 
-#impossible:hover {
+.impossible:hover {
   background-color: rgb(187, 129, 0);
 }
 
@@ -204,8 +204,8 @@ body {
   padding: 10px 15px;
   width: 65px;
   background-color: yellow;
-  color: white;
-  text-shadow: 1px 1px 2px black;
+  color: black;
+  text-shadow: 1px 1px 2px white;
   letter-spacing: 1px;
   text-align: center;
   font-size: 15px;
@@ -243,4 +243,18 @@ body {
 
 .canvas-container {
   width: 500px;
+}
+
+.bonus-selected {
+  width: 162px;
+  float: left;
+  padding: 10px 15px;
+  border: 2px solid black;
+  margin-top: 10px;
+  font-size: 14px;
+  background-color: yellow;
+  color: black;
+  text-shadow: 1px 1px 2px white;
+  text-align: center;
+  cursor: crosshair;
 }

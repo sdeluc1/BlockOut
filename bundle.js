@@ -52,7 +52,6 @@
 	    this.stage = stage;
 	    this.dragging = {};
 	    this.grid = 80;
-	    this.moveCount = 0;
 	    this.currentLevel = 0;
 
 	    this.drag = this.drag.bind(this);
@@ -75,10 +74,17 @@
 	    for(let i = 0; i < buttons.length; i++){
 	      buttons[i].addEventListener("click", (e) => {
 	        this.loadLevel(parseInt(e.currentTarget.id));
-	        document.getElementById(`${this.previous}`).className = "level-box";
+	        if(this.previous === 10){
+	          document.getElementById(`${this.previous}`).className = "impossible";
+	        } else {
+	          document.getElementById(`${this.previous}`).className = "level-box";    
+	        }
 	      });
 	    }
-
+	    document.getElementById('10').addEventListener("click", (e) => {
+	      this.loadLevel(10);
+	      document.getElementById(`${this.previous}`).className = "level-box";
+	    });
 	  }
 
 	  checkCollision(nextX, nextY, block1, block2) {
@@ -211,7 +217,11 @@
 
 	  currentLevelSelected() {
 	    this.previous = this.previous || this.currentLevel;
-	    document.getElementById(`${this.currentLevel}`).className = "curr-level";
+	    if(this.currentLevel === 10){
+	      document.getElementById(`10`).className = "bonus-selected";
+	    } else {
+	      document.getElementById(`${this.currentLevel}`).className = "curr-level";
+	    }
 	  }
 
 	}
@@ -233,13 +243,16 @@
 	const level2 = __webpack_require__(3);
 	const level3 = __webpack_require__(4);
 	const level4 = __webpack_require__(5);
+	const level5 = __webpack_require__(6);
+	const level6 = __webpack_require__(7);
+	const level7 = __webpack_require__(8);
+	const level8 = __webpack_require__(9);
+	const level9 = __webpack_require__(10);
+	const level10 = __webpack_require__(11);
+	const level11 = __webpack_require__(12);
 
-	const LEVELS = [
-	  level1,
-	  level2,
-	  level3,
-	  level4
-	];
+	const LEVELS = [ level1, level2, level3, level4, level5, level6,
+	                 level7, level8, level9, level10, level11 ];
 
 	module.exports = LEVELS;
 
@@ -631,6 +644,702 @@
 	}
 
 	module.exports = loadLevel4;
+
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	const loadLevel5 = (stage) => {
+
+	  let block1 = new createjs.Shape();
+	  let block2 = new createjs.Shape();
+	  let block3 = new createjs.Shape();
+	  let block4 = new createjs.Shape();
+	  let block5 = new createjs.Shape();
+	  let block6 = new createjs.Shape();
+	  let block7 = new createjs.Shape();
+	  let block8 = new createjs.Shape();
+	  let block9 = new createjs.Shape();
+	  let block10 = new createjs.Shape();
+	  let block11 = new createjs.Shape();
+
+	  const imgV = new Image();
+	  imgV.src = "./images/oak-v.jpg";
+	  imgV.onload = () => {
+
+	    block2.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block4.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block5.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block6.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block7.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block8.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block11.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 240, 10);
+
+	    stage.update();
+	  }
+
+	  const imgH = new Image();
+	  imgH.src = "./images/oak-h.jpg";
+	  imgH.onload = () => {
+	    block1.graphics.setStrokeStyle(3).beginStroke("black").beginFill("red").drawRoundRect(0, 0, 160, 80, 10);
+	    block3.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    block9.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 240, 80, 10);
+	    block10.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    stage.update();
+	  }
+
+	  block1.x = 240;
+	  block1.y = 160;
+
+	  block2.x = 0;
+	  block2.y = 0;
+
+	  block3.x = 80;
+	  block3.y = 0;
+
+	  block4.x = 80;
+	  block4.y = 80;
+
+	  block5.x = 160;
+	  block5.y = 80;
+
+	  block6.x = 160;
+	  block6.y = 240;
+
+	  block7.x = 240;
+	  block7.y = 0;
+
+	  block8.x = 240;
+	  block8.y = 240;
+
+	  block9.x = 240;
+	  block9.y = 400;
+
+	  block10.x = 320;
+	  block10.y = 320;
+
+	  block11.x = 400;
+	  block11.y = 0;
+
+	  block1.setBounds(0, 0, 160, 80);
+	  block2.setBounds(0, 0, 80, 160);
+	  block3.setBounds(0, 0, 160, 80);
+	  block4.setBounds(0, 0, 80, 160);
+	  block5.setBounds(0, 0, 80, 160);
+	  block6.setBounds(0, 0, 80, 160);
+	  block7.setBounds(0, 0, 80, 160);
+	  block8.setBounds(0, 0, 80, 160);
+	  block9.setBounds(0, 0, 240, 80);
+	  block10.setBounds(0, 0, 160, 80);
+	  block11.setBounds(0, 0, 80, 240);
+
+	  const blocks = [block1, block2, block3, block4,
+	                  block5, block6, block7, block8,
+	                  block9, block10, block11];
+	  return blocks;
+	}
+
+	module.exports = loadLevel5;
+
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	const loadLevel6 = (stage) => {
+
+	  let block1 = new createjs.Shape();
+	  let block2 = new createjs.Shape();
+	  let block3 = new createjs.Shape();
+	  let block4 = new createjs.Shape();
+	  let block5 = new createjs.Shape();
+	  let block6 = new createjs.Shape();
+	  let block7 = new createjs.Shape();
+	  let block8 = new createjs.Shape();
+	  let block9 = new createjs.Shape();
+	  let block10 = new createjs.Shape();
+	  let block11 = new createjs.Shape();
+
+	  const imgV = new Image();
+	  imgV.src = "./images/oak-v.jpg";
+	  imgV.onload = () => {
+
+	    block4.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block5.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block6.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block7.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 240, 10);
+	    block10.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block11.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+
+	    stage.update();
+	  }
+
+	  const imgH = new Image();
+	  imgH.src = "./images/oak-h.jpg";
+	  imgH.onload = () => {
+	    block1.graphics.setStrokeStyle(3).beginStroke("black").beginFill("red").drawRoundRect(0, 0, 160, 80, 10);
+	    block2.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    block3.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 240, 80, 10);
+	    block8.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    block9.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+
+	    stage.update();
+	  }
+
+	  block1.x = 160;
+	  block1.y = 160;
+
+	  block2.x = 0;
+	  block2.y = 0;
+
+	  block3.x = 0;
+	  block3.y = 240;
+
+	  block4.x = 80;
+	  block4.y = 80;
+
+	  block5.x = 160;
+	  block5.y = 0;
+
+	  block6.x = 160;
+	  block6.y = 320;
+
+	  block7.x = 240;
+	  block7.y = 240;
+
+	  block8.x = 320;
+	  block8.y = 320;
+
+	  block9.x = 320;
+	  block9.y = 400;
+
+	  block10.x = 400;
+	  block10.y = 0;
+
+	  block11.x = 400;
+	  block11.y = 160;
+
+	  block1.setBounds(0, 0, 160, 80);
+	  block2.setBounds(0, 0, 160, 80);
+	  block3.setBounds(0, 0, 240, 80);
+	  block4.setBounds(0, 0, 80, 160);
+	  block5.setBounds(0, 0, 80, 160);
+	  block6.setBounds(0, 0, 80, 160);
+	  block7.setBounds(0, 0, 80, 240);
+	  block8.setBounds(0, 0, 160, 80);
+	  block9.setBounds(0, 0, 160, 80);
+	  block10.setBounds(0, 0, 80, 160);
+	  block11.setBounds(0, 0, 80, 160);
+
+	  const blocks = [block1, block2, block3, block4, block5, block6,
+	                  block7, block8, block9, block10, block11];
+	  return blocks;
+	}
+
+	module.exports = loadLevel6;
+
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	const loadLevel7 = (stage) => {
+
+	  let block1 = new createjs.Shape();
+	  let block2 = new createjs.Shape();
+	  let block3 = new createjs.Shape();
+	  let block4 = new createjs.Shape();
+	  let block5 = new createjs.Shape();
+	  let block6 = new createjs.Shape();
+	  let block7 = new createjs.Shape();
+	  let block8 = new createjs.Shape();
+	  let block9 = new createjs.Shape();
+
+	  const imgV = new Image();
+	  imgV.src = "./images/oak-v.jpg";
+	  imgV.onload = () => {
+
+	    block2.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 240, 10);
+	    block6.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block9.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 240, 10);
+
+	    stage.update();
+	  }
+
+	  const imgH = new Image();
+	  imgH.src = "./images/oak-h.jpg";
+	  imgH.onload = () => {
+	    block1.graphics.setStrokeStyle(3).beginStroke("black").beginFill("red").drawRoundRect(0, 0, 160, 80, 10);
+	    block3.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    block4.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    block5.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 240, 80, 10);
+	    block7.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    block8.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+
+	    stage.update();
+	  }
+
+	  block1.x = 80;
+	  block1.y = 160;
+
+	  block2.x = 0;
+	  block2.y = 0;
+
+	  block3.x = 0;
+	  block3.y = 240;
+
+	  block4.x = 0;
+	  block4.y = 400;
+
+	  block5.x = 160;
+	  block5.y = 0;
+
+	  block6.x = 160;
+	  block6.y = 240;
+
+	  block7.x = 160;
+	  block7.y = 400;
+
+	  block8.x = 240;
+	  block8.y = 320;
+
+	  block9.x = 320;
+	  block9.y = 80;
+
+	  block1.setBounds(0, 0, 160, 80);
+	  block2.setBounds(0, 0, 80, 240);
+	  block3.setBounds(0, 0, 160, 80);
+	  block4.setBounds(0, 0, 160, 80);
+	  block5.setBounds(0, 0, 240, 80);
+	  block6.setBounds(0, 0, 80, 160);
+	  block7.setBounds(0, 0, 160, 80);
+	  block8.setBounds(0, 0, 160, 80);
+	  block9.setBounds(0, 0, 80, 240);
+
+	  const blocks = [block1, block2, block3, block4, block5, block6, block7, block8, block9];
+	  return blocks;
+	}
+
+	module.exports = loadLevel7;
+
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	const loadLevel8 = (stage) => {
+
+	  let block1 = new createjs.Shape();
+	  let block2 = new createjs.Shape();
+	  let block3 = new createjs.Shape();
+	  let block4 = new createjs.Shape();
+	  let block5 = new createjs.Shape();
+	  let block6 = new createjs.Shape();
+	  let block7 = new createjs.Shape();
+	  let block8 = new createjs.Shape();
+	  let block9 = new createjs.Shape();
+	  let block10 = new createjs.Shape();
+	  let block11 = new createjs.Shape();
+	  let block12 = new createjs.Shape();
+	  let block13 = new createjs.Shape();
+	  let block14 = new createjs.Shape();
+
+	  const imgV = new Image();
+	  imgV.src = "./images/oak-v.jpg";
+	  imgV.onload = () => {
+
+	    block3.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block4.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block6.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block8.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block9.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 240, 10);
+	    block11.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block12.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block13.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block14.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+
+	    stage.update();
+	  }
+
+	  const imgH = new Image();
+	  imgH.src = "./images/oak-h.jpg";
+	  imgH.onload = () => {
+	    block1.graphics.setStrokeStyle(3).beginStroke("black").beginFill("red").drawRoundRect(0, 0, 160, 80, 10);
+	    block2.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    block5.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    block7.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    block10.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 240, 80, 10);
+
+	    stage.update();
+	  }
+
+	  block1.x = 80;
+	  block1.y = 160;
+
+	  block2.x = 0;
+	  block2.y = 0;
+
+	  block3.x = 0;
+	  block3.y = 80;
+
+	  block4.x = 0;
+	  block4.y = 240;
+
+	  block5.x = 80;
+	  block5.y = 240;
+
+	  block6.x = 80;
+	  block6.y = 320;
+
+	  block7.x = 160;
+	  block7.y = 0;
+
+	  block8.x = 160;
+	  block8.y = 320;
+
+	  block9.x = 240;
+	  block9.y = 80;
+
+	  block10.x = 240;
+	  block10.y = 400;
+
+	  block11.x = 320;
+	  block11.y = 0;
+
+	  block12.x = 320;
+	  block12.y = 160;
+
+	  block13.x = 400;
+	  block13.y = 0;
+
+	  block14.x = 400;
+	  block14.y = 160;
+
+	  block1.setBounds(0, 0, 160, 80);
+	  block2.setBounds(0, 0, 160, 80);
+	  block3.setBounds(0, 0, 80, 160);
+	  block4.setBounds(0, 0, 80, 160);
+	  block5.setBounds(0, 0, 160, 80);
+	  block6.setBounds(0, 0, 80, 160);
+	  block7.setBounds(0, 0, 160, 80);
+	  block8.setBounds(0, 0, 80, 160);
+	  block9.setBounds(0, 0, 80, 240);
+	  block10.setBounds(0, 0, 240, 80);
+	  block11.setBounds(0, 0, 80, 160);
+	  block12.setBounds(0, 0, 80, 160);
+	  block13.setBounds(0, 0, 80, 160);
+	  block14.setBounds(0, 0, 80, 160);
+
+	  const blocks = [block1, block2, block3, block4,
+	                  block5, block6, block7, block8,
+	                  block9, block10, block11, block12,
+	                  block13, block14];
+	  return blocks;
+	}
+
+	module.exports = loadLevel8;
+
+
+/***/ },
+/* 10 */
+/***/ function(module, exports) {
+
+	const loadLevel9 = (stage) => {
+
+	  let block1 = new createjs.Shape();
+	  let block2 = new createjs.Shape();
+	  let block3 = new createjs.Shape();
+	  let block4 = new createjs.Shape();
+	  let block5 = new createjs.Shape();
+	  let block6 = new createjs.Shape();
+	  let block7 = new createjs.Shape();
+	  let block8 = new createjs.Shape();
+	  let block9 = new createjs.Shape();
+	  let block10 = new createjs.Shape();
+
+	  const imgV = new Image();
+	  imgV.src = "./images/oak-v.jpg";
+	  imgV.onload = () => {
+
+	    block2.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block5.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block6.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block7.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block8.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 240, 10);
+
+	    stage.update();
+	  }
+
+	  const imgH = new Image();
+	  imgH.src = "./images/oak-h.jpg";
+	  imgH.onload = () => {
+	    block1.graphics.setStrokeStyle(3).beginStroke("black").beginFill("red").drawRoundRect(0, 0, 160, 80, 10);
+	    block3.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 240, 80, 10);
+	    block4.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    block9.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    block10.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    stage.update();
+	  }
+
+	  block1.x = 0;
+	  block1.y = 160;
+
+	  block2.x = 0;
+	  block2.y = 0;
+
+	  block3.x = 80;
+	  block3.y = 80;
+
+	  block4.x = 80;
+	  block4.y = 400;
+
+	  block5.x = 160;
+	  block5.y = 160;
+
+	  block6.x = 240;
+	  block6.y = 160;
+
+	  block7.x = 240;
+	  block7.y = 320;
+
+	  block8.x = 320;
+	  block8.y = 0;
+
+	  block9.x = 320;
+	  block9.y = 320;
+
+	  block10.x = 320;
+	  block10.y = 400;
+
+	  block1.setBounds(0, 0, 160, 80);
+	  block2.setBounds(0, 0, 80, 160);
+	  block3.setBounds(0, 0, 240, 80);
+	  block4.setBounds(0, 0, 160, 80);
+	  block5.setBounds(0, 0, 80, 160);
+	  block6.setBounds(0, 0, 80, 160);
+	  block7.setBounds(0, 0, 80, 160);
+	  block8.setBounds(0, 0, 80, 240);
+	  block9.setBounds(0, 0, 160, 80);
+	  block10.setBounds(0, 0, 160, 80);
+
+
+	  const blocks = [block1, block2, block3, block4,
+	                  block5, block6, block7, block8,
+	                  block9, block10];
+	  return blocks;
+	}
+
+	module.exports = loadLevel9;
+
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	const loadLevel10 = (stage) => {
+
+	  let block1 = new createjs.Shape();
+	  let block2 = new createjs.Shape();
+	  let block3 = new createjs.Shape();
+	  let block4 = new createjs.Shape();
+	  let block5 = new createjs.Shape();
+	  let block6 = new createjs.Shape();
+	  let block7 = new createjs.Shape();
+	  let block8 = new createjs.Shape();
+	  let block9 = new createjs.Shape();
+	  let block10 = new createjs.Shape();
+
+	  const imgV = new Image();
+	  imgV.src = "./images/oak-v.jpg";
+	  imgV.onload = () => {
+
+	    block2.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 240, 10);
+	    block5.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block9.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block10.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 240, 10);
+
+	    stage.update();
+	  }
+
+	  const imgH = new Image();
+	  imgH.src = "./images/oak-h.jpg";
+	  imgH.onload = () => {
+	    block1.graphics.setStrokeStyle(3).beginStroke("black").beginFill("red").drawRoundRect(0, 0, 160, 80, 10);
+	    block3.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    block4.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    block6.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    block7.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    block8.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 240, 80, 10);
+	    stage.update();
+	  }
+
+	  block1.x = 80;
+	  block1.y = 160;
+
+	  block2.x = 0;
+	  block2.y = 0;
+
+	  block3.x = 0;
+	  block3.y = 240;
+
+	  block4.x = 0;
+	  block4.y = 320;
+
+	  block5.x = 160;
+	  block5.y = 0;
+
+	  block6.x = 160;
+	  block6.y = 240;
+
+	  block7.x = 160;
+	  block7.y = 320;
+
+	  block8.x = 240;
+	  block8.y = 0;
+
+	  block9.x = 240;
+	  block9.y = 80;
+
+	  block10.x = 400;
+	  block10.y = 160;
+
+	  block1.setBounds(0, 0, 160, 80);
+	  block2.setBounds(0, 0, 80, 240);
+	  block3.setBounds(0, 0, 160, 80);
+	  block4.setBounds(0, 0, 160, 80);
+	  block5.setBounds(0, 0, 80, 160);
+	  block6.setBounds(0, 0, 160, 80);
+	  block7.setBounds(0, 0, 160, 80);
+	  block8.setBounds(0, 0, 240, 80);
+	  block9.setBounds(0, 0, 80, 160);
+	  block10.setBounds(0, 0, 80, 240);
+
+
+	  const blocks = [block1, block2, block3, block4,
+	                  block5, block6, block7, block8,
+	                  block9, block10];
+	  return blocks;
+	}
+
+	module.exports = loadLevel10;
+
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	const loadLevel11 = (stage) => {
+
+	  let block1 = new createjs.Shape();
+	  let block2 = new createjs.Shape();
+	  let block3 = new createjs.Shape();
+	  let block4 = new createjs.Shape();
+	  let block5 = new createjs.Shape();
+	  let block6 = new createjs.Shape();
+	  let block7 = new createjs.Shape();
+	  let block8 = new createjs.Shape();
+	  let block9 = new createjs.Shape();
+	  let block10 = new createjs.Shape();
+	  let block11 = new createjs.Shape();
+	  let block12 = new createjs.Shape();
+	  let block13 = new createjs.Shape();
+	  let block14 = new createjs.Shape();
+
+	  const imgV = new Image();
+	  imgV.src = "./images/oak-v.jpg";
+	  imgV.onload = () => {
+
+	    block2.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 240, 10);
+	    block4.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block8.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block9.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 160, 10);
+	    block13.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 240, 10);
+	    block14.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgV).drawRoundRect(0, 0, 80, 240, 10);
+
+	    stage.update();
+	  }
+
+	  const imgH = new Image();
+	  imgH.src = "./images/oak-h.jpg";
+	  imgH.onload = () => {
+	    block1.graphics.setStrokeStyle(3).beginStroke("black").beginFill("red").drawRoundRect(0, 0, 160, 80, 10);
+	    block3.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);80
+	    block5.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    block6.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    block7.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    block10.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    block11.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+	    block12.graphics.setStrokeStyle(3).beginStroke("black").beginBitmapFill(imgH).drawRoundRect(0, 0, 160, 80, 10);
+
+	    stage.update();
+	  }
+
+	  block1.x = 80;
+	  block1.y = 160;
+
+	  block2.x = 0;
+	  block2.y = 0;
+
+	  block3.x = 0;
+	  block3.y = 240;
+
+	  block4.x = 80;
+	  block4.y = 0;
+
+	  block5.x = 80;
+	  block5.y = 400;
+
+	  block6.x = 160;
+	  block6.y = 0;
+
+	  block7.x = 160;
+	  block7.y = 80;
+
+	  block8.x = 160;
+	  block8.y = 240;
+
+	  block9.x = 240;
+	  block9.y = 160;
+
+	  block10.x = 240;
+	  block10.y = 320;
+
+	  block11.x = 240;
+	  block11.y = 400;
+
+	  block12.x = 320;
+	  block12.y = 0;
+
+	  block13.x = 320;
+	  block13.y = 80;
+
+	  block14.x = 400;
+	  block14.y = 160;
+
+	  block1.setBounds(0, 0, 160, 80);
+	  block2.setBounds(0, 0, 80, 240);
+	  block3.setBounds(0, 0, 160, 80);
+	  block4.setBounds(0, 0, 80, 160);
+	  block5.setBounds(0, 0, 160, 80);
+	  block6.setBounds(0, 0, 160, 80);
+	  block7.setBounds(0, 0, 160, 80);
+	  block8.setBounds(0, 0, 80, 160);
+	  block9.setBounds(0, 0, 80, 160);
+	  block10.setBounds(0, 0, 160, 80);
+	  block11.setBounds(0, 0, 160, 80);
+	  block12.setBounds(0, 0, 160, 80);
+	  block13.setBounds(0, 0, 80, 240);
+	  block14.setBounds(0, 0, 80, 240);
+
+	  const blocks = [block1, block2, block3, block4,
+	                  block5, block6, block7, block8,
+	                  block9, block10, block11, block12,
+	                  block13, block14];
+	  return blocks;
+	}
+
+	module.exports = loadLevel11;
 
 
 /***/ }

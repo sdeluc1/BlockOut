@@ -6,7 +6,6 @@ class Game {
     this.stage = stage;
     this.dragging = {};
     this.grid = 80;
-    this.moveCount = 0;
     this.currentLevel = 0;
 
     this.drag = this.drag.bind(this);
@@ -29,10 +28,17 @@ class Game {
     for(let i = 0; i < buttons.length; i++){
       buttons[i].addEventListener("click", (e) => {
         this.loadLevel(parseInt(e.currentTarget.id));
-        document.getElementById(`${this.previous}`).className = "level-box";
+        if(this.previous === 10){
+          document.getElementById(`${this.previous}`).className = "impossible";
+        } else {
+          document.getElementById(`${this.previous}`).className = "level-box";    
+        }
       });
     }
-
+    document.getElementById('10').addEventListener("click", (e) => {
+      this.loadLevel(10);
+      document.getElementById(`${this.previous}`).className = "level-box";
+    });
   }
 
   checkCollision(nextX, nextY, block1, block2) {
@@ -165,7 +171,11 @@ class Game {
 
   currentLevelSelected() {
     this.previous = this.previous || this.currentLevel;
-    document.getElementById(`${this.currentLevel}`).className = "curr-level";
+    if(this.currentLevel === 10){
+      document.getElementById(`10`).className = "bonus-selected";
+    } else {
+      document.getElementById(`${this.currentLevel}`).className = "curr-level";
+    }
   }
 
 }
