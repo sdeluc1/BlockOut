@@ -77,7 +77,7 @@
 	        if(this.previous === 10){
 	          document.getElementById(`${this.previous}`).className = "impossible";
 	        } else {
-	          document.getElementById(`${this.previous}`).className = "level-box";    
+	          document.getElementById(`${this.previous}`).className = "level-box";
 	        }
 	      });
 	    }
@@ -179,6 +179,7 @@
 	      document.getElementById('modal-background').style.display = "none";
 	    }, 2000);
 	    this.stage.removeAllChildren();
+	    this.previous = this.currentLevel;
 	    this.currentLevel += 1;
 	    this.blocks = LEVELS[this.currentLevel](this.stage);
 	    this.init();
