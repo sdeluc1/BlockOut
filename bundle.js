@@ -180,6 +180,7 @@
 	  }
 
 	  solved() {
+	    document.getElementById('win-moves').innerHTML = "Total Moves: " + this.moveCount;
 	    document.getElementById('win-modal').style.display = "block";
 	    document.getElementById('modal-background').style.display = "block";
 	    setTimeout( () => {

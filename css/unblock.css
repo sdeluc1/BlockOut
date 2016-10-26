@@ -108,6 +108,18 @@ body {
   float: left;
 }
 
+.moves {
+  background-image: url("../images/darkwood.jpg");
+  width: 125px;
+  height: 40px;
+  color: rgb(193, 180, 20);
+  font-size: 17px;
+  border-radius: 8px;
+  letter-spacing: 2px;
+  text-shadow: 1px 1px 1px black;
+  float: left;
+}
+
 #levels-title {
   background-image: url("../images/darkwood.jpg");
   color: white;
@@ -151,7 +163,12 @@ body {
   margin-bottom: 20px;
 }
 
+#win-moves {
+  display: block;
+}
+
 #win-modal #win-message {
+  display: block;
   font-size: 16px;
   font-weight: 600;
   color: white;
