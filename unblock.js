@@ -7,8 +7,11 @@ class Game {
     this.dragging = {};
     this.grid = 80;
     this.currentLevel = 0;
+    this.moveCount = 0;
+    this.moveDisplay = document.getElementById('move-count');
 
     this.drag = this.drag.bind(this);
+    this.dragStart = this.dragStart.bind(this);
     this.reset = this.reset.bind(this);
     this.chooseLevelOpen = this.chooseLevelOpen.bind(this);
   }
@@ -39,6 +42,8 @@ class Game {
       this.loadLevel(10);
       document.getElementById(`${this.previous}`).className = "level-box";
     });
+    this.moveCount = 0;
+    this.moveDisplay.innerHTML = "Moves: 0";
   }
 
   checkCollision(nextX, nextY, block1, block2) {
@@ -86,6 +91,9 @@ class Game {
 
   dragStart(e) {
     this.dragging = false;
+    this.moveCount += 1;
+    console.log(this.moveCount);
+    this.moveDisplay.innerHTML = "Moves: " + this.moveCount;
   }
 
   drag(e) {
