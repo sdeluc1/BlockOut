@@ -11,4 +11,4 @@ particular level.
 
 The game was built using EaselJS and vanilla JavaScript
 
-![screenshot](https://github.com/sdeluc1/BlockOut/blob/master/images/BlockOut.png "Block Out")
+![screenshot](https://github.com/sdeluc1/BlockOut/blob/master/images/block-out.png "Block Out")

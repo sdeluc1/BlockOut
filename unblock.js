@@ -135,6 +135,9 @@ class Game {
     this.stage.removeAllChildren();
     this.previous = this.currentLevel;
     this.currentLevel += 1;
+    if(this.currentLevel > 10){
+      this.currentLevel = 0;
+    }
     this.blocks = LEVELS[this.currentLevel](this.stage);
     this.init();
   }
